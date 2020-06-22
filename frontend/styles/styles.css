@@ -1,0 +1,45 @@
+#botiga{
+	background: #dfdfdf;
+}
+
+h1{
+	margin-left: 400px;
+	padding-bottom: 20px;
+}
+
+.viewDown{
+	color: red;
+	display: none;
+}
+
+#newUser{
+	margin-left: 350px;
+	margin-right: 20px;
+	display: block;
+	float: left;
+}
+#oldUser{
+	margin-top: 42px;
+}
+
+#anonimousUser{
+	margin-left: 400px;
+	margin-top: 80px;	
+}
+
+#enterGame{
+	margin-top: 10px;
+	margin-left: 50px;
+}
+#enterGameUser{
+	margin-top: 10px;
+	margin-left: 50px;
+}
+#enterGameAnonimous{
+	margin-left: 80px;
+}
+
+#response1{
+	margin-top: 50px;
+	margin-left: 490px;
+}
