@@ -6,8 +6,7 @@ $(function(){
 	var $paintingList = $('#paintingList');
 	var $selectShopToShow = $('#selectShopToShow');
 	//rebem inputs
-	var $newUserName = $('#newUserName');
-	var $shopCapacity = $('#shopCapacity');
+	var $userName;
 	var $paintingName = $('#paintingName');
 	var $authorName = $('#authorName');
 	//declarem urls
@@ -35,12 +34,11 @@ $(function(){
 		}
 	});
 	
-
 	//POST players
 	$('#enterGame').on('click', function() {
-
+		$userName = $('#newUserName');
 		var player = {
-			playerName: $newUserName.val(),
+			playerName: $userName.val(),
 		};
 		
 		$.ajax({
@@ -50,33 +48,70 @@ $(function(){
 			data: JSON.stringify(player),
 			success: function(newPlayer){
 				window.location.href=$url2;
-				console.log('success',newPlayer)
+				console.log('success', newPlayer)
 			},
 			error: function(){
-				alert('error posting new shop');
+				alert('error posting new player');
 			}
 		});
 	});
 
-	//POST Paintings
-	$('#add-painting').on('click', function() {
-		
-		var painting = {
-			paintingName: $paintingName.val(),
-			authorName: $authorName.val(),
+	//Get 1 player
+	$('#enterGameUser').on('click', function() {
+		$userName = $('#userName')
+		$.ajax({
+			type: 'GET',
+			url: $baseUrl + '/players/'+ $userName.val(),
+			success: function(player){
+				window.location.href=$url2;
+				console.log('success', player)
+			},
+			error: function(){
+				alert('error getting player');
+			}
+		});
+	});
+
+	//POST anonimous
+	$('#enterGameAnonimous').on('click', function() {
+
+		var player = {
+			playerName: 'Anonimous',
 		};
 		
 		$.ajax({
 			type: 'POST',
-			url: $baseUrl + '/shops/'+ $shopSelect.val() + '/paintings',
+			url: $baseUrl + '/players',
 			contentType: "application/json",
-			data: JSON.stringify(painting),
-			success: function(newPainting){
+			data: JSON.stringify(player),
+			success: function(newPlayer){
 				window.location.href=$url2;
-				console.log('success',newPainting)
+				console.log('success', newPlayer)
 			},
 			error: function(){
-				alert('error posting new painting');
+				alert('error posting anonimous');
+			}
+		});
+	});
+
+	//POST Rolls
+	$('#roll').on('click', function() {
+		
+		var roll = {
+			player: $userName.val(),
+		};
+		
+		$.ajax({
+			type: 'POST',
+			url: $baseUrl + '/players/'+ $userName.val() + '/game',
+			contentType: "application/json",
+			data: JSON.stringify(roll),
+			success: function(newRoll){
+				window.location.href=$url2;
+				console.log('success',newRoll)
+			},
+			error: function(){
+				alert('error posting new roll');
 			}
 		});
 	});

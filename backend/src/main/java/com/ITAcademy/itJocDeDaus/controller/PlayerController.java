@@ -30,17 +30,22 @@ public class PlayerController {
 		boolean isRepeated = false;
 		List<Player> playerList = playerServiceImpl.playerList();
 		
-		for(Player p : playerList) {
-			if(p.getPlayerName().equals(newPlayer.getPlayerName())) {
-				player = p;
-				isRepeated = true;
+		if(newPlayer.getPlayerName().equals("Anonimous")) {
+			return playerServiceImpl.savePlayer(newPlayer);
+		}else {
+			for(Player p : playerList) {
+				if(p.getPlayerName().equals(newPlayer.getPlayerName())) {
+					player = p;
+					isRepeated = true;
+				}
+			}
+			if (isRepeated) {
+				throw new RepeatedPlayerException(player.getPlayerName());
+			} else {
+				return playerServiceImpl.savePlayer(newPlayer);
 			}
 		}
-		if (isRepeated) {
-			throw new RepeatedPlayerException(player.getPlayerName());
-		} else {
-			return playerServiceImpl.savePlayer(newPlayer);
-		}
+		
 	}
 	
 	@PutMapping("/players")
@@ -53,20 +58,31 @@ public class PlayerController {
 		
 		selectedPlayer.setPlayerName(newPlayer.getPlayerName());
 		
-		replacedPlayer = playerServiceImpl.savePlayer(selectedPlayer);		
+		replacedPlayer = playerServiceImpl.savePlayer(selectedPlayer);
 		
 		return replacedPlayer;
 	}
 	
 	@GetMapping("/players")
 	List<Player> playerList(){
-		
 		return playerServiceImpl.playerList();
 	}
 	
-	@GetMapping("/players/{name}")
+	@GetMapping("/players/{playerName}")
 	Player one(@PathVariable String playerName) {
-		return playerServiceImpl.playerByName(playerName);
+		List<Player> playerList = playerServiceImpl.playerList();
+		boolean isRepeated = false;
+		for (Player p : playerList) {
+			if(p.getPlayerName().equals(playerName)) {
+				isRepeated = true;
+			}
+		}
+		if (!isRepeated) {
+			throw new PlayerNotFoundException(playerName);
+		} else {
+			return playerServiceImpl.playerByName(playerName);
+		}
+		
 	}
 
 }

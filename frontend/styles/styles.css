@@ -12,17 +12,17 @@ h1{
 	display: none;
 }
 
-#newUser{
+#newUser, #dice1{
 	margin-left: 350px;
 	margin-right: 20px;
 	display: block;
 	float: left;
 }
-#oldUser{
+#oldUser, #dice2{
 	margin-top: 42px;
 }
 
-#anonimousUser{
+#anonimousUser, #roll{
 	margin-left: 400px;
 	margin-top: 80px;	
 }
