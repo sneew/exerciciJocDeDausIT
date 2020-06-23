@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ITAcademy.itJocDeDaus.dto.Player;
 import com.ITAcademy.itJocDeDaus.dto.Roll;
+import com.ITAcademy.itJocDeDaus.service.PlayerServiceImpl;
 import com.ITAcademy.itJocDeDaus.service.RollServiceImpl;
 
 @RestController
@@ -21,20 +23,31 @@ public class RollController {
 	@Autowired
 	RollServiceImpl rollServiceImpl;
 	
+	@Autowired
+	PlayerServiceImpl playerServiceImpl;
 	
-	@PostMapping("/players/{id}/games/")
-	Roll newRoll(@RequestBody Roll newRoll) {
-		return rollServiceImpl.saveRoll(newRoll);
-	}
-	
-	@DeleteMapping("/players/{id}/games/")
-	void deleteRoll(@PathVariable Long id) {
-		rollServiceImpl.deleteRoll(id);
-	}
 	
 	@GetMapping("/players/{id}/games")
 	List<Roll> all(){
 		return rollServiceImpl.rollList();
 	}
+	
+	@PostMapping("/players/{id}/games")
+	Roll newRoll(@RequestBody Roll newRoll, @PathVariable Long id) {
+		Player player = playerServiceImpl.playerById(id);
+		newRoll.setPlayer(player);
+		newRoll.introResult(newRoll.getDice1(), newRoll.getDice2());
+		return rollServiceImpl.saveRoll(newRoll);
+	}
+	
+	@DeleteMapping("/players/{id}/games")
+	void deleteRoll(@PathVariable Long id) {
+		List<Roll> rList = rollServiceImpl.findAllByPlayerId(id);
+		for (Roll r : rList) {
+			rollServiceImpl.deleteRoll(r.getId());
+		}
+		
+	}
+
 
 }

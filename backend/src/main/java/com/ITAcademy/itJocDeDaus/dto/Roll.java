@@ -71,7 +71,13 @@ public class Roll {
 		this.result = result;
 	}
 
-	
-	
+	public void introResult(int d1, int d2) {
+		if ((d1 + d2) == 7) {
+			this.result = result.WINNER;
+		}else {
+			this.result = result.LOSER;
+		}
+		
+	}	
 
 }

@@ -37,6 +37,12 @@ public class RollServiceImpl implements IRollService{
 	public void deleteRoll(Long id) {
 		rollRepository.deleteById(id);
 	}
+
+	@Override
+	public List<Roll> findAllByPlayerId(Long id) {
+		// TODO Auto-generated method stub
+		return rollRepository.findAllByPlayerId(id);
+	}
 	
 	
 

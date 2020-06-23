@@ -15,4 +15,6 @@ public interface IRollService {
 	public Roll updateRoll(Roll roll);
 	
 	public void deleteRoll(Long id);
+
+	List<Roll> findAllByPlayerId(Long id);
 }

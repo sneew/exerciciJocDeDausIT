@@ -12,15 +12,24 @@ h1{
 	display: none;
 }
 
-#newUser, #dice1{
+#newUser{
 	margin-left: 350px;
 	margin-right: 20px;
 	display: block;
 	float: left;
 }
+
 #oldUser, #dice2{
 	margin-top: 42px;
 }
+
+#dice1{
+	margin-left: 450px;
+	margin-right: 20px;
+	display: block;
+	float: left;
+}
+
 
 #anonimousUser, #roll{
 	margin-left: 400px;
@@ -35,11 +44,19 @@ h1{
 	margin-top: 10px;
 	margin-left: 50px;
 }
-#enterGameAnonimous{
+#enterGameAnonimous, #rolling{
 	margin-left: 80px;
 }
 
-#response1{
+#response1, #response2{
 	margin-top: 50px;
 	margin-left: 490px;
+}
+
+#winlos{
+	margin-left: 70px;
+}
+
+#titol, #dice1, #dice2, #roll, #response2, #winlos{
+	display: none;
 }

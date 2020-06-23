@@ -82,7 +82,6 @@ public class PlayerController {
 		} else {
 			return playerServiceImpl.playerByName(playerName);
 		}
-		
 	}
 
 }
