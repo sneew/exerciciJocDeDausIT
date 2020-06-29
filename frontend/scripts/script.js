@@ -4,6 +4,7 @@ $(function(){
 	var $playersList = $('#playersList');
 	var $rollsList = $('#rollsList');
 	var $welcome = $('#welcome');
+	var $bestWorst = $('#bestWorst');
 	//rebem inputs
 	var $userName;
 	var $playerId;
@@ -34,25 +35,29 @@ $(function(){
 	//POST players
 	$('#enterGame').on('click', function() {
 		$userName = $('#newUserName');
-		var player = {
-			playerName: $userName.val(),
-		};
-		
-		$.ajax({
-			type: 'POST',
-			url: $baseUrl + '/players',
-			contentType: "application/json",
-			data: JSON.stringify(player),
-			success: function(newPlayer){
-				console.log('success', newPlayer);
-				$playerId = newPlayer.id;
-				insideLogin();
-				getRolls($rollsList, $baseUrl, $playerId);
-			},
-			error: function(){
-				alert('error posting new player');
-			}
-		});
+		if($userName.val() != ""){
+			var player = {
+				playerName: $userName.val(),
+			};
+			
+			$.ajax({
+				type: 'POST',
+				url: $baseUrl + '/players',
+				contentType: "application/json",
+				data: JSON.stringify(player),
+				success: function(newPlayer){
+					console.log('success', newPlayer);
+					$playerId = newPlayer.id;
+					insideLogin();
+					getRolls($rollsList, $baseUrl, $playerId);
+				},
+				error: function(){
+					alert('error posting new player');
+				}
+			});
+		}else {
+			alert('Write a name');
+		}
 	});
 
 	//Get 1 player
@@ -162,6 +167,37 @@ $(function(){
 		});
 	});
 
+	//Get winner
+	$.ajax({
+		type: 'GET',
+		url: $baseUrl + '/players/ranking/winner',
+
+		success: function(player){
+			$bestWorst.append(
+				"<p>BEST PLAYER: " + player.playerName  + " ("+ "" + "%) </p>"
+			);
+			console.log('success', player);
+		},
+		error: function(){
+			alert('error loading');
+		}
+	});
+
+	//Get loser
+	$.ajax({
+		type: 'GET',
+		url: $baseUrl + '/players/ranking/loser',
+
+		success: function(player){
+			$bestWorst.append(
+				"<p>WORST PLAYER: " + player.playerName  + " ("+ "" + "%)</p>"
+			);
+			console.log('success', player);
+		},
+		error: function(){
+			alert('error loading');
+		}
+	});
 });
 
 function getRolls($rollsList, $baseUrl, $playerId){

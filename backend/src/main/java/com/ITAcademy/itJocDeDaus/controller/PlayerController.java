@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ITAcademy.itJocDeDaus.dto.Player;
+import com.ITAcademy.itJocDeDaus.dto.Result;
+import com.ITAcademy.itJocDeDaus.dto.Roll;
 import com.ITAcademy.itJocDeDaus.exception.PlayerNotFoundException;
 import com.ITAcademy.itJocDeDaus.exception.RepeatedPlayerException;
 import com.ITAcademy.itJocDeDaus.service.PlayerServiceImpl;
@@ -89,13 +91,69 @@ public class PlayerController {
 		}
 	}
 	
-	//get loser
-	@GetMapping("/players/ranking/loser")
-	Player one() {
-		return 
+	//get winner
+	@GetMapping("/players/ranking/winner")
+	Player winner() {
+		Player pWinner = new Player();
+		int w = 0;
+		int total = 0;
+		int pNew = 0;
+		int pWin = 0;
+		List<Player> players = playerServiceImpl.playerList();
+		
+		for (Player p : players) {
+			List<Roll> rolls = rollServiceImpl.findAllByPlayerId(p.getId());
+			for (Roll r : rolls) {
+				if(r.getResult()==Result.WINNER) {
+					w += 1;
+					total += 1;
+				}else {
+					total += 1;
+				}
+			}
+			pNew = w * 100 / total;
+			if(pWin < pNew) {
+				pWin = pNew;
+				pWinner = p;
+			}
+		}
+		
+		return pWinner;
 	}
 	
 	
-	//get winner
-
+	//get loser
+	@GetMapping("/players/ranking/loser")
+	Player loser() {
+		Player pLoser = new Player();
+		int w = 0;
+		int total = 0;
+		int pNew = 0;
+		int pLos = 100;
+		List<Player> players = playerServiceImpl.playerList();
+		
+		for (Player p : players) {
+			List<Roll> rolls = rollServiceImpl.findAllByPlayerId(p.getId());
+			for (Roll r : rolls) {
+				if(r.getResult()==Result.WINNER) {
+					w += 1;
+					total += 1;
+				}else {
+					total += 1;
+				}
+			}
+			pNew = w * 100 / total;
+			if(pLos > pNew) {
+				pLos = pNew;
+				pLoser = p;
+			}
+		}
+		return pLoser;
+	}
+	
+	@GetMapping("/players/ranking")
+	int ranking() {
+		
+		return 0;
+	}
 }
