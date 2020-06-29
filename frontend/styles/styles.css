@@ -2,9 +2,8 @@
 	background: #dfdfdf;
 }
 
-h1{
+#welcome, .titol{
 	margin-left: 400px;
-	padding-bottom: 20px;
 }
 
 .viewDown{
@@ -24,12 +23,11 @@ h1{
 }
 
 #dice1{
+	margin-top: 22px;
 	margin-left: 450px;
 	margin-right: 20px;
-	display: block;
 	float: left;
 }
-
 
 #anonimousUser, #roll{
 	margin-left: 400px;
@@ -54,9 +52,9 @@ h1{
 }
 
 #winlos{
-	margin-left: 70px;
+	margin-left: 430px;
 }
 
-#titol, #dice1, #dice2, #roll, #response2, #winlos{
+.page2, .edit{
 	display: none;
 }

@@ -3,16 +3,12 @@ $(function(){
 	// declarem espais html on insertar
 	var $playersList = $('#playersList');
 	var $rollsList = $('#rollsList');
-	var $paintingList = $('#paintingList');
-	var $selectShopToShow = $('#selectShopToShow');
+	var $welcome = $('#welcome');
 	//rebem inputs
 	var $userName;
 	var $playerId;
-	var $paintingName = $('#paintingName');
-	var $authorName = $('#authorName');
 	//declarem urls
 	var $baseUrl = "http://localhost:8080";
-	var $url2 = "http://localhost/vistajocdedaus/";
 
 	//GET players  ---- falta mitja de tots els jugadors
 	$.ajax({
@@ -50,8 +46,8 @@ $(function(){
 			success: function(newPlayer){
 				console.log('success', newPlayer);
 				$playerId = newPlayer.id;
-				getRolls();
 				insideLogin();
+				getRolls($rollsList, $baseUrl, $playerId);
 			},
 			error: function(){
 				alert('error posting new player');
@@ -61,15 +57,16 @@ $(function(){
 
 	//Get 1 player
 	$('#enterGameUser').on('click', function() {
-		$userName = $('#userName')
+		$userName = $('#userName');
 		$.ajax({
 			type: 'GET',
 			url: $baseUrl + '/players/'+ $userName.val(),
 			success: function(player){
 				console.log('success', player);
 				$playerId = player.id;
-				getRolls();
+				$welcome.append(player.playerName + "!");
 				insideLogin();
+				getRolls($rollsList, $baseUrl, $playerId);
 			},
 			error: function(){
 				alert('error getting player');
@@ -92,7 +89,6 @@ $(function(){
 			success: function(newPlayer){
 				console.log('success', newPlayer);
 				$playerId = newPlayer.id;
-				getRolls();
 				insideLogin();
 			},
 			error: function(){
@@ -133,10 +129,7 @@ $(function(){
 		
 	});
 
-	
-	
-
-	//DELETE
+	//DELETE all rolls
 	$('#delete').on('click', function(){
 		$.ajax({
 			type:'DELETE',
@@ -147,9 +140,31 @@ $(function(){
 		});
 	});
 
+	//PUT player name (editar nom jugador)
+	$('#edit').on('click', function(){
+		$newName = $('#playerNewName');
+
+		var newPlayer = {
+			playerName : $newName.val(),
+		};
+
+		$.ajax({
+			type: 'PUT',
+			url: $baseUrl + '/players/' + $playerId,
+			contentType: "application/json",
+			data: JSON.stringify(newPlayer),
+			success: function(newEditPlayer){
+				console.log('success', newEditPlayer);
+			},
+			error: function(){
+				alert('error editing name');
+			}
+		});
+	});
+
 });
 
-function getRolls(){
+function getRolls($rollsList, $baseUrl, $playerId){
 	//GET Rolls
 	$rollsList.html("");
 
@@ -158,7 +173,6 @@ function getRolls(){
 		url: $baseUrl + '/players/'+ $playerId +'/games',
 
 		success: function(rolls){
-			$rollsList.html("");
 			$.each(rolls, function(i, roll){
 				$rollsList.append(
 					"<li>"+
@@ -175,27 +189,25 @@ function getRolls(){
 }
 
 function insideLogin(){
-	document.getElementById("newUser").style.display = "none";
-	document.getElementById("oldUser").style.display = "none";
-	document.getElementById("anonimousUser").style.display = "none";
-	document.getElementById("response1").style.display = "none";
+	var arrayOfPage1 = document.getElementsByClassName("page1");
+	for(var i = 0; i < arrayOfPage1.length; i++){
+		arrayOfPage1[i].style.display ="none";
+	}
 
-	document.getElementById("dice1").style.display = "block";
-	document.getElementById("dice2").style.display = "block";
-	document.getElementById("roll").style.display = "block";
-	document.getElementById("titol").style.display = "block";
-	document.getElementById("response2").style.display = "block";
-
-
+	var arrayOfPage2 = document.getElementsByClassName("page2");
+	
+	for(var i = 0; i < arrayOfPage2.length; i++){
+		arrayOfPage2[i].style.display ="block";
+	}
 
 }
 
 function winlos(dau1, dau2){
 	document.getElementById("winlos").style.display = "block";
 	if((dau1 + dau2) == 7){
-		document.getElementById("rollResult").innerHTML = "WINNER";
+		document.getElementById("rollResult").innerHTML = "WINNER!";
 	}else {
-		document.getElementById("rollResult").innerHTML = "LOSER";
+		document.getElementById("rollResult").innerHTML = "LOSER... :(";
 	}
 
 	

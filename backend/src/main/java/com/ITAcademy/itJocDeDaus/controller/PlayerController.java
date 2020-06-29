@@ -15,6 +15,7 @@ import com.ITAcademy.itJocDeDaus.dto.Player;
 import com.ITAcademy.itJocDeDaus.exception.PlayerNotFoundException;
 import com.ITAcademy.itJocDeDaus.exception.RepeatedPlayerException;
 import com.ITAcademy.itJocDeDaus.service.PlayerServiceImpl;
+import com.ITAcademy.itJocDeDaus.service.RollServiceImpl;
 
 @RestController
 @CrossOrigin(origins = "http://localhost")
@@ -23,7 +24,10 @@ public class PlayerController {
 	@Autowired
 	PlayerServiceImpl playerServiceImpl;
 
+	@Autowired
+	RollServiceImpl rollServiceImpl;
 	
+	//new player
 	@PostMapping("/players")
 	Player newPlayer(@RequestBody Player newPlayer) throws RepeatedPlayerException {
 		Player player =  new Player();
@@ -45,29 +49,30 @@ public class PlayerController {
 				return playerServiceImpl.savePlayer(newPlayer);
 			}
 		}
-		
 	}
 	
-	@PutMapping("/players")
-	Player replacePlayer(@RequestBody Player newPlayer) {
+	//edit player
+	@PutMapping("/players/{id}")
+	Player replacePlayer(@RequestBody Player newPlayer, @PathVariable Long id) {
 		
-		Player selectedPlayer = new Player();
-		Player replacedPlayer = new Player();
+		Player oldPlayer;
 		
-		selectedPlayer = playerServiceImpl.playerById(newPlayer.getId());
+		oldPlayer = playerServiceImpl.playerById(id);
 		
-		selectedPlayer.setPlayerName(newPlayer.getPlayerName());
+		oldPlayer.setPlayerName(newPlayer.getPlayerName());
 		
-		replacedPlayer = playerServiceImpl.savePlayer(selectedPlayer);
+		playerServiceImpl.savePlayer(oldPlayer);
 		
-		return replacedPlayer;
+		return oldPlayer;
 	}
 	
+	//get all players 
 	@GetMapping("/players")
 	List<Player> playerList(){
 		return playerServiceImpl.playerList();
 	}
 	
+	//get one player
 	@GetMapping("/players/{playerName}")
 	Player one(@PathVariable String playerName) {
 		List<Player> playerList = playerServiceImpl.playerList();
@@ -83,5 +88,14 @@ public class PlayerController {
 			return playerServiceImpl.playerByName(playerName);
 		}
 	}
+	
+	//get loser
+	@GetMapping("/players/ranking/loser")
+	Player one() {
+		return 
+	}
+	
+	
+	//get winner
 
 }

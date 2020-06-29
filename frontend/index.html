@@ -9,51 +9,54 @@
 	</head>
 	<body>
 		<div>
-			<h1>Exercici Joc de Daus</h1>
-			<h1 id="titol">GAME PAGE</h1>
+			<h1 class="titol">Exercici Joc de Daus</h1>
+			<h1 class="page2 titol">GAME PAGE</h1>
+			<h2 id="welcome" class="page2 titol">Welcome </h2> 
+			<input type="text" class="page2 titol" id="playerNewName" placeholder="Edit name"/> 
+			<button class="page2 titol" id="edit">Edit</button>
+		</div>
+
+		<div id="newUser" class="page1">
+			<h2>Are you new?</h2>
+			<h2>Write your Username:</h2>
+			<input type="text" id="newUserName" placeholder="Write your new username"> </br>
+			<button type="button" id="enterGame">Enter game</button>
+		</div>
+		<div id="oldUser" class="page1">
+			<h2>Do you have an account?</h2>
+			<h2>Write your Username:</h2>
+			<input type="text" id="userName" placeholder="Write your username"> </br>
+			<button type="button" id="enterGameUser">Enter game</button>
+		</div>
+		<div id="anonimousUser" class="page1">
+			<p>If you don't want to register, press this button:</p> 
+			<button type="button" id="enterGameAnonimous">Enter with Anonimous</button>
+		</div>
+	
+		<div id="dice1" class="page2">
+			<h2>Dice 1</h2>
+			<h2 id="number1"></h2>
+		</div>
+		<div id="dice2" class="page2">
+			<h2>Dice 2</h2>
+			<h2 id="number2"></h2>
+		</div>
+		<div id="winlos" class="page2">
+			<h1 id="rollResult"></h1>
+		</div>
+		<div id="roll" class="page2">
+			<button type="button" id="rolling">Let's Roll</button>
 		</div>
 		
-			<div id="newUser">
-				<h2>Are you new?</h2>
-				<h2>Write your Username:</h2>
-				<input type="text" id="newUserName" placeholder="Write your new username"> </br>
-				<button type="button" id="enterGame">Enter game</button>
-			</div>
-			<div id="oldUser">
-				<h2>Do you have an account?</h2>
-				<h2>Write your Username:</h2>
-				<input type="text" id="userName" placeholder="Write your username"> </br>
-				<button type="button" id="enterGameUser">Enter game</button>
-			</div>
-			<div id="anonimousUser">
-				<p>If you don't want to register, press this button:</p> 
-				<button type="button" id="enterGameAnonimous">Enter with Anonimous</button>
-			</div>
-		
-			<div id="dice1">
-				<h2>Dice 1</h2>
-				<h2 id="number1"></h2>
-			</div>
-			<div id="dice2">
-				<h2>Dice 2</h2>
-				<h2 id="number2"></h2>
-			</div>
-			<div id="winlos">
-				<h1 id="rollResult"></h1>
-			</div>
-			<div id="roll">
-				<button type="button" id="rolling">Let's Roll</button>
-			</div>
-		
 		<div>
-			<div id="response1">
+			<div id="response1" class="page1">
 				<h2>Players list:</h2> 
 				<ul id="playersList">
 				</ul>				
 			</div>
 		</div>
 		<div>
-			<div id="response2">
+			<div id="response2" class="page2">
 				<h2>Roll list:</h2> 
 				<button type="button" id="delete">Delete rolls</button>
 				<ul id="rollsList">

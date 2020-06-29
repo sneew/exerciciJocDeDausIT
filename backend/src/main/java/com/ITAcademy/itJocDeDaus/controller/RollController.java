@@ -28,8 +28,8 @@ public class RollController {
 	
 	
 	@GetMapping("/players/{id}/games")
-	List<Roll> all(){
-		return rollServiceImpl.rollList();
+	List<Roll> all(@PathVariable Long id){
+		return rollServiceImpl.findAllByPlayerId(id);
 	}
 	
 	@PostMapping("/players/{id}/games")
@@ -46,8 +46,5 @@ public class RollController {
 		for (Roll r : rList) {
 			rollServiceImpl.deleteRoll(r.getId());
 		}
-		
 	}
-
-
 }
