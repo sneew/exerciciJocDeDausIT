@@ -19,11 +19,13 @@ $(function(){
 		success: function(players){
 			
 			$.each(players, function(i, player){
+				
 				$playersList.append(
-					"<li>"+
-						"<p>" + player.playerName  + ": "+ "" + "</p>" +
+					"<li>" +
+						"<p>" + player.playerName + " (<span id='playerPercent"+ player.id +"'></span> %) </p>" +
 					"</li>"
 				);
+				percent(player);
 				console.log('success', player)
 			});
 		},
@@ -174,8 +176,9 @@ $(function(){
 
 		success: function(player){
 			$bestWorst.append(
-				"<p>BEST PLAYER: " + player.playerName  + " ("+ "" + "%) </p>"
+				"<p>BEST PLAYER: " + player.playerName  + " (<span id='playerPercent"+ player.id +"'></span> %) </p>"
 			);
+			percent(player);
 			console.log('success', player);
 		},
 		error: function(){
@@ -190,8 +193,9 @@ $(function(){
 
 		success: function(player){
 			$bestWorst.append(
-				"<p>WORST PLAYER: " + player.playerName  + " ("+ "" + "%)</p>"
+				"<p>WORST PLAYER: " + player.playerName  + " (<span id='playerPercent"+ player.id +"'></span> %) </p>"
 			);
+			percent(player);
 			console.log('success', player);
 		},
 		error: function(){
@@ -245,8 +249,33 @@ function winlos(dau1, dau2){
 	}else {
 		document.getElementById("rollResult").innerHTML = "LOSER... :(";
 	}
+}
 
-	
+function percent(player){
+	var $baseUrl = "http://localhost:8080";
+	var insert = document.getElementById("playerPercent"+player.id);
+	$.ajax({
+		type: 'POST',
+		url: $baseUrl + '/players/ranking',
+		contentType: "application/json",
+		data: JSON.stringify(player),
+		success: function(percentage){
+			insert.innerHTML = percentage;
+		},
+		error: function(){
+			alert('error loading percentages');
+		},
 
+	});
+}
 
+function playSixGame(){
+	var arrayofSixGame = document.getElementsByClassName("sixGame");
+	for(var i = 0; i < arrayofSixGame.length; i++){
+		if (arrayofSixGame[i].style.display == "none"){
+			arrayofSixGame[i].style.display ="block";
+		}else{
+			arrayofSixGame[i].style.display ="none";
+		}
+	}
 }

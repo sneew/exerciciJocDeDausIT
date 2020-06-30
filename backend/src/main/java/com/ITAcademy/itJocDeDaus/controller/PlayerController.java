@@ -95,14 +95,14 @@ public class PlayerController {
 	@GetMapping("/players/ranking/winner")
 	Player winner() {
 		Player pWinner = new Player();
-		int w = 0;
-		int total = 0;
-		int pNew = 0;
 		int pWin = 0;
 		List<Player> players = playerServiceImpl.playerList();
 		
 		for (Player p : players) {
 			List<Roll> rolls = rollServiceImpl.findAllByPlayerId(p.getId());
+			int pNew = 0;
+			int w = 0;
+			int total = 0;
 			for (Roll r : rolls) {
 				if(r.getResult()==Result.WINNER) {
 					w += 1;
@@ -116,8 +116,7 @@ public class PlayerController {
 				pWin = pNew;
 				pWinner = p;
 			}
-		}
-		
+		}	
 		return pWinner;
 	}
 	
@@ -125,15 +124,15 @@ public class PlayerController {
 	//get loser
 	@GetMapping("/players/ranking/loser")
 	Player loser() {
-		Player pLoser = new Player();
-		int w = 0;
-		int total = 0;
-		int pNew = 0;
+		Player playerLoser = new Player();
 		int pLos = 100;
 		List<Player> players = playerServiceImpl.playerList();
 		
 		for (Player p : players) {
 			List<Roll> rolls = rollServiceImpl.findAllByPlayerId(p.getId());
+			int w = 0;
+			int total = 0;
+			int pNew = 0;
 			for (Roll r : rolls) {
 				if(r.getResult()==Result.WINNER) {
 					w += 1;
@@ -145,15 +144,28 @@ public class PlayerController {
 			pNew = w * 100 / total;
 			if(pLos > pNew) {
 				pLos = pNew;
-				pLoser = p;
+				playerLoser = p;
 			}
 		}
-		return pLoser;
+		return playerLoser;
 	}
 	
-	@GetMapping("/players/ranking")
-	int ranking() {
-		
-		return 0;
+	@PostMapping("/players/ranking")
+	int ranking(@RequestBody Player rPlayer) {
+		Player p = playerServiceImpl.playerById(rPlayer.getId());
+		int wins = 0;
+		int total = 0;
+		int percent = 0;
+		List<Roll> rolls = rollServiceImpl.findAllByPlayerId(p.getId());
+		for (Roll r : rolls) {
+			if(r.getResult()==Result.WINNER) {
+				wins += 1;
+				total += 1;
+			}else {
+				total += 1;
+			}
+		}
+		percent = wins * 100 / total;
+		return percent;
 	}
 }

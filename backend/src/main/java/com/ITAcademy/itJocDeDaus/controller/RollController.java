@@ -36,7 +36,7 @@ public class RollController {
 	Roll newRoll(@RequestBody Roll newRoll, @PathVariable Long id) {
 		Player player = playerServiceImpl.playerById(id);
 		newRoll.setPlayer(player);
-		newRoll.introResult(newRoll.getDice1(), newRoll.getDice2());
+		newRoll.introResult(newRoll.getDice1(), newRoll.getDice2(), newRoll.getDice3(), newRoll.getDice4(), newRoll.getDice5(), newRoll.getDice6());
 		return rollServiceImpl.saveRoll(newRoll);
 	}
 	
