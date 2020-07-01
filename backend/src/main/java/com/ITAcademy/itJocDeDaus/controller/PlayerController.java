@@ -111,11 +111,14 @@ public class PlayerController {
 					total += 1;
 				}
 			}
-			pNew = w * 100 / total;
-			if(pWin < pNew) {
-				pWin = pNew;
-				pWinner = p;
+			if (total != 0) {
+				pNew = w * 100 / total;
+				if(pWin < pNew) {
+					pWin = pNew;
+					pWinner = p;
+				}
 			}
+			
 		}	
 		return pWinner;
 	}
@@ -141,10 +144,12 @@ public class PlayerController {
 					total += 1;
 				}
 			}
-			pNew = w * 100 / total;
-			if(pLos > pNew) {
-				pLos = pNew;
-				playerLoser = p;
+			if(total != 0) {
+				pNew = w * 100 / total;
+				if(pLos > pNew) {
+					pLos = pNew;
+					playerLoser = p;
+				}
 			}
 		}
 		return playerLoser;
@@ -165,7 +170,11 @@ public class PlayerController {
 				total += 1;
 			}
 		}
-		percent = wins * 100 / total;
-		return percent;
+		if(total != 0) {
+			percent = wins * 100 / total;
+			return percent;
+		} else {
+			return 0;
+		}
 	}
 }

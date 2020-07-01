@@ -65,20 +65,24 @@ $(function(){
 	//Get 1 player
 	$('#enterGameUser').on('click', function() {
 		$userName = $('#userName');
-		$.ajax({
-			type: 'GET',
-			url: $baseUrl + '/players/'+ $userName.val(),
-			success: function(player){
-				console.log('success', player);
-				$playerId = player.id;
-				$welcome.append(player.playerName + "!");
-				insideLogin();
-				getRolls($rollsList, $baseUrl, $playerId);
-			},
-			error: function(){
-				alert('error getting player');
-			}
-		});
+		if($userName.val() != ""){
+			$.ajax({
+				type: 'GET',
+				url: $baseUrl + '/players/'+ $userName.val(),
+				success: function(player){
+					console.log('success', player);
+					$playerId = player.id;
+					$welcome.append(player.playerName + "!");
+					insideLogin();
+					getRolls($rollsList, $baseUrl, $playerId);
+				},
+				error: function(){
+					alert('error getting player');
+				}
+			});
+		}else {
+			alert('Write a name');
+		}
 	});
 
 	//POST anonimous
@@ -108,17 +112,44 @@ $(function(){
 	$('#roll').on('click', function() {	
 		var d1 = Math.floor(Math.random() * (6 - 1 + 1)) + 1; // return Math.floor(Math.random() * (max - min + 1)) + min;
 		var d2 = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+		var d3 = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+		var d4 = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+		var d5 = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+		var d6 = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
 
 		var insertDice1 = document.getElementById("number1");
 		var insertDice2 = document.getElementById("number2");
+		var insertDice3 = document.getElementById("number3");
+		var insertDice4 = document.getElementById("number4");
+		var insertDice5 = document.getElementById("number5");
+		var insertDice6 = document.getElementById("number6");
 
 		insertDice1.innerHTML = d1;
 		insertDice2.innerHTML = d2;
+		insertDice3.innerHTML = d3;
+		insertDice4.innerHTML = d4;
+		insertDice5.innerHTML = d5;
+		insertDice6.innerHTML = d6;
+
+		var roll;
 		
-		var roll = {
-			dice1: d1,
-			dice2: d2,
-		};
+		if (document.getElementById("dice3").style.display == "none"){
+			roll = {
+				dice1: d1,
+				dice2: d2,
+			}
+		}else{
+			roll = {
+				dice1: d1,
+				dice2: d2,
+				dice3: d3,
+				dice4: d4,
+				dice5: d5,
+				dice6: d6,
+			};
+		}
+
+
 		//POST Rolls
 		$.ajax({
 			type: 'POST',
@@ -126,7 +157,7 @@ $(function(){
 			contentType: "application/json",
 			data: JSON.stringify(roll),
 			success: function(newRoll){
-				winlos(d1, d2);
+				winlos(d1, d2, d3, d4, d5, d6);
 				console.log('success',newRoll);
 			},
 			error: function(){
@@ -242,11 +273,15 @@ function insideLogin(){
 
 }
 
-function winlos(dau1, dau2){
+function winlos(dau1, dau2, dau3, dau4, dau5, dau6){
 	document.getElementById("winlos").style.display = "block";
-	if((dau1 + dau2) == 7){
+	if(document.getElementById("dice3").style.display == "none" && (dau1 + dau2) == 7){
 		document.getElementById("rollResult").innerHTML = "WINNER!";
-	}else {
+	}else if (document.getElementById("dice3").style.display == "none" && (dau1 + dau2) != 7){
+		document.getElementById("rollResult").innerHTML = "LOSER... :(";
+	}else if ((dau1 + dau2 + dau3 + dau4 + dau5 + dau6) == 6 || (dau1 + dau2 + dau3 + dau4 + dau5 + dau6) == 5){
+		document.getElementById("rollResult").innerHTML = "WINNER!";
+	}else{
 		document.getElementById("rollResult").innerHTML = "LOSER... :(";
 	}
 }
@@ -271,11 +306,42 @@ function percent(player){
 
 function playSixGame(){
 	var arrayofSixGame = document.getElementsByClassName("sixGame");
-	for(var i = 0; i < arrayofSixGame.length; i++){
-		if (arrayofSixGame[i].style.display == "none"){
-			arrayofSixGame[i].style.display ="block";
-		}else{
-			arrayofSixGame[i].style.display ="none";
+	if(document.getElementById("dice1").style.display == "none"){
+		for(var i = 0; i < arrayofSixGame.length; i++){
+			arrayofSixGame[i].style.display = "block";
 		}
+		document.getElementById("dice1").style.display = "block";
+		document.getElementById("dice2").style.display = "block";
+	}else{
+		for(var i = 0; i < arrayofSixGame.length; i++){
+			arrayofSixGame[i].style.display = "block";
+		}
+		document.getElementById("dice1").style.display = "block";
+		document.getElementById("dice2").style.display = "block";
+	}
+	document.getElementById("dice1").style.marginLeft = "270px";
+	document.getElementById("dice2").style.marginRight = "15px";
+	document.getElementById("dice2").style.marginTop = "22px";
+	document.getElementById("dice2").style.float = "left";
+}
+
+function playTwoGame(){
+	var arrayofSixGame = document.getElementsByClassName("sixGame");
+	if(document.getElementById("dice3").style.display == "block"){
+		for(var i = 0; i < arrayofSixGame.length; i++){
+			arrayofSixGame[i].style.display = "none";
+		}
+		document.getElementById("dice1").style.marginLeft = "450px";
+		document.getElementById("dice2").style.float = "";
+		document.getElementById("dice2").style.marginTop = "42px";
+	}else{
+		document.getElementById("dice1").style.display = "block";
+		document.getElementById("dice2").style.display = "block";
+		for(var i = 0; i < arrayofSixGame.length; i++){
+			arrayofSixGame[i].style.display = "none";
+		}
+		document.getElementById("dice1").style.marginLeft = "450px";
+		document.getElementById("dice2").style.float = "";
+		document.getElementById("dice2").style.marginTop = "42px";
 	}
 }
